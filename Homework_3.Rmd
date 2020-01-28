@@ -1,0 +1,152 @@
+---
+title: "Homework_3"
+author: "Emily Ogden"
+date: "January 27, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Part 1  
+1.  
+```{r}
+lake=read.csv("Killarney.csv")
+attach(lake)
+```
+2.  
+```{r}
+boxplot(Diversity~status, xlab="Lake status", ylab = "Species Diversity")
+```
+  
+Acidic lakes seem to have a lower species diversity than the neutral and recovered lakes.  
+3.  
+```{r}
+mod1=aov(Diversity~status)
+summary(mod1)
+```
+4.  
+$$H_0:\mu_{acid}=\mu_{neutral}=\mu_{recovered}$$
+5.  
+$$F_{obs}=16.41$$
+$$p-value=5.43*10^{-6}$$
+6.  
+At least one of the lake types is different than the other types based on the p-value that is less than 0.05.  
+7.  
+```{r}
+TukeyHSD(mod1)
+```
+8.  
+There is a significant difference between Neutral and acidic lake types (p=0.00002) and between recovered and acidic lake types(0.0004).  
+9.  
+```{r}
+library(car)
+shapiro.test(mod1$residuals)
+leveneTest(mod1)
+```
+Since p<0.05 for the Shapiro-Wilk test, we reject the null hypothesis that the residuals are normally distributed. However, for the Levene's test the p-value was greater than 0.05. Therefore, we fail to reject the null hypothesis that the variences are equale.   
+10.a)  
+```{r}
+cancer=read.csv("esoph.csv")
+attach(cancer)
+mod2=aov(ncases~Alcohol*Tobacco)
+summary(mod2)
+```
+b)  
+Based on the results from the ANOVA table, there is no significant effect of Alcohol (p=0.110), Tobacco (p=0.146), or the interaction (p=0.892) between the two on the number of cancer cases.  
+11.  a)  
+```{r}
+mod3=aov(ncases~Age*Tobacco)
+summary(mod3)
+```
+b)  
+```{r}
+TukeyHSD(mod3)
+
+```
+c)  
+Based on the results from the ANOVA there is significant evidence to suggest that Age and Tobacco consumption effect the number of cancer cases (p=1.2e-8, p=0.0076). The Tukey's HSD suggests that there is no significant difference in the number of cancer cases between those aged 25-35, 35-44, and 75+. There is also no significant difference in those aged 75+, 44-55, 55-65, and 65-74. For tobacco consumption there is no significance between those who consumed 20-29 g/day and 30+ g/day, as well as no significant difference between 10-19 g/day and 0-9 g/day.  
+12.  a)  
+```{r}
+mod4=aov(ncases~Age*Alcohol)
+summary(mod4)
+```
+b)  
+```{r}
+interaction.plot(Age,Alcohol,ncases,legend = T)
+
+```
+c)  
+Based on the results from the ANOVA table and the interaction plot, there is evidence to suggest that the interaction between age and alcohol is significant (p=0.0363), which suggests that the effect of alcohol on the mean number of cancer cases is dependent on age group. The overall effect of age on the mean number of cancer cases increases with age until approximately age 55. Consuming 40-79 g/day of alcohol has the greatest effect on mean number of cancer cases, while consuming 0-39 g/day had the least effect on mean number of cancer cases.  
+#Part 2  
+13.  a)  
+```{r}
+View(mtcars)
+plot(mtcars$wt,mtcars$mpg,xlab = "weight",ylab="fuel mileage")
+```
+  Based on the scatterplot it appears that weight and fuel mileage are negatively associated.  
+b)  
+```{r}
+mod5=lm(mtcars$mpg~mtcars$wt)
+summary(mod5)
+```
+c)  
+```{r}
+plot(mtcars$wt,mtcars$mpg,xlab = "weight",ylab="fuel mileage")
+abline(mod5,col="blue")
+```
+$$y=-5.34x+37.28$$
+d)  
+Based on the linear model, there is evidence to suggest that gas mileage is negatively related to car weight (p=1.29e-10).  
+14.  a)  
+```{r}
+plot(mtcars$hp,mtcars$qsec, xlab = "horsepower", ylab="quarter mile time")
+```
+Based on the scatterplot it seems that quarter mile time is negatively associated with horsepower.  
+b)  
+
+```{r}
+mod6=lm(mtcars$qsec~mtcars$hp)
+summary(mod6)
+```
+c)  
+```{r}
+plot(mtcars$hp,mtcars$qsec, xlab = "horsepower", ylab="quarter mile time")
+abline(mod6,col="blue")
+```
+$$y=-0.018x+20.55$$
+d) 
+```{r}
+-0.018*(300)+20.55
+```
+e)  
+Based on the linear model, there is evidence to suggest that horsepower is negatively related to quarter mile time (p=5.77e-6).  
+f)  
+```{r}
+library(gvlma)
+gvlma(lm(mod6))
+```
+The data meets all global stats except kurtosis, which implies violation of a linear relationship or normally distributed residuals.  
+15.  a)  
+```{r}
+View(States)
+```
+SATV is the Average score of graduating high-school students in the state on the verbal component of the Scholastic Aptitude Test (a standard university admission exam).  
+Pay is the Average teacher's salary in the state, in $1000s.  
+b)  
+```{r}
+plot(States$SATV,States$pay, xlab = "SAT average score by state", ylab="Average teacher's salary in the state by $1000s")
+```
+c)  
+```{r}
+mod7=lm(States$pay~States$SATV)
+summary(mod7)
+```
+$$r=-0.095$$
+d)  
+```{r}
+plot(States$SATV,States$pay, xlab = "SAT average score by state", ylab="Average teacher's salary in the state by $1000s")
+abline(mod7, col="blue")
+```
+
+Based on the linear model, average SAT scores and teacher's salary are negatively correlated (p=2.28e-5).  
