@@ -44,7 +44,7 @@ library(car)
 shapiro.test(mod1$residuals)
 leveneTest(mod1)
 ```
-Since p<0.05 for the Shapiro-Wilk test, we reject the null hypothesis that the residuals are normally distributed. However, for the Levene's test the p-value was greater than 0.05. Therefore, we fail to reject the null hypothesis that the variences are equale.   
+Since p<0.05 for the Shapiro-Wilk test, we reject the null hypothesis that the residuals are normally distributed. However, for the Levene's test the p-value was greater than 0.05. Therefore, we fail to reject the null hypothesis that the variences are equale. The data does not meet the assumption that the residuals of the model are normally distributed, but does meet the assumption of equale variance within groups.    
 10.a)  
 ```{r}
 cancer=read.csv("esoph.csv")
@@ -54,7 +54,7 @@ summary(mod2)
 ```
 b)  
 Based on the results from the ANOVA table, there is no significant effect of Alcohol (p=0.110), Tobacco (p=0.146), or the interaction (p=0.892) between the two on the number of cancer cases.  
-11.  a)  
+11.a)  
 ```{r}
 mod3=aov(ncases~Age*Tobacco)
 summary(mod3)
@@ -78,6 +78,7 @@ interaction.plot(Age,Alcohol,ncases,legend = T)
 ```
 c)  
 Based on the results from the ANOVA table and the interaction plot, there is evidence to suggest that the interaction between age and alcohol is significant (p=0.0363), which suggests that the effect of alcohol on the mean number of cancer cases is dependent on age group. The overall effect of age on the mean number of cancer cases increases with age until approximately age 55. Consuming 40-79 g/day of alcohol has the greatest effect on mean number of cancer cases, while consuming 0-39 g/day had the least effect on mean number of cancer cases.  
+  
 #Part 2  
 13.  a)  
 ```{r}
@@ -102,6 +103,7 @@ Based on the linear model, there is evidence to suggest that gas mileage is nega
 ```{r}
 plot(mtcars$hp,mtcars$qsec, xlab = "horsepower", ylab="quarter mile time")
 ```
+  
 Based on the scatterplot it seems that quarter mile time is negatively associated with horsepower.  
 b)  
 
@@ -119,6 +121,7 @@ d)
 ```{r}
 -0.018*(300)+20.55
 ```
+According to the regression fit, the quarter mile time for a car with 300 horsepower would be 15.15 seconds. 
 e)  
 Based on the linear model, there is evidence to suggest that horsepower is negatively related to quarter mile time (p=5.77e-6).  
 f)  
